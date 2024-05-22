@@ -1,4 +1,53 @@
+import { useContext } from "react";
+import  LoginType  from "../api/repositories/auth_repository_http"
+
+
+
 export function App() {
+  const { login } = useContext(AuthContext);
+
+
+  useEffect(() => {
+    async function loginVerify() {
+        // await AsyncStorage.removeItem("token");
+        const response = await validateToken();
+        if (response) {
+            navigation.navigate("StackRoutes");
+        }
+    }
+    loginVerify();
+});
+
+  async function handleLogin() {
+    if (!email || !password) {
+      return;
+  }
+
+    const response = await login(email, password);
+    
+    if (response.token) {
+      const { token } = result;
+      await AsyncStorage.setItem("token", token);
+      // console.log(token);
+      navigation.navigate("StackRoutes");
+      toast.show({
+          title: "Login realizado com sucesso",
+          description: "Você já pode acessar o app",
+          backgroundColor: "green.500",
+          placement: "top"
+      });
+  } else {
+      toast.show({
+          title: "Erro no login",
+          description: "O email ou senha não conferem",
+          backgroundColor: "red.500",
+          placement: "top"
+      });
+  }
+
+  }
+
+  
   return (
     <main className="bg-gray-100 min-h-screen">
       <section className="p-8 flex flex-col items-center">
@@ -6,7 +55,7 @@ export function App() {
         <div className="flex gap-4 justify-center">
           <input className="border-2 border-blue-500 rounded-md p-1" type="email" placeholder="Email" required />
           <input className="border-2 border-blue-500 rounded-md p-1" type="password" placeholder="Senha" required />
-          <button className="bg-green-500 p-2 rounded-lg font-bold text-white hover:bg-green-600">Capturar token</button>
+          <button className="bg-green-500 p-2 rounded-lg font-bold text-white hover:bg-green-600" onClick={handleLogin} >Capturar token</button>
 
         </div>
           <p className="mt-8">token se validar ou mensagem</p>
