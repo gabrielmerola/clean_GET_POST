@@ -1,32 +1,26 @@
-
-
-import { AxiosResponse } from "axios";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { api } from "../http";
-import { AxiosError } from "axios";
 
-export interface LoginType {
+
+export type LoginResponseType = {
     token: string;
+};
+
+export type UserResponsiveType = {
+    name: string,
+    email: string,
 };
 
 
 export class AuthRepositoryHttp {
     async doLogin(email: string, password: string) {
         try {
-            if (!email || !password) {
-                return {
-                    status: 422,
-                    message: "Preencha todos os campos",
-                    token: "Token inválida "
-                };
-            }
-            const result: AxiosResponse = await api.post<LoginType>("/auth-user", {
+            const result = await api.post<LoginResponseType>("/auth-user", {
                 email,
                 password
             });
             console.log("teste token: ", result.data);
-            return {
-                token: result.data.token
-            };
+            return result.data
         } catch (error: any) {
             throw new Error(error);
         }
@@ -34,7 +28,7 @@ export class AuthRepositoryHttp {
 
     async getAllUsers() {
         try {
-            const response = await api.get("/users-list");
+            const response = await api.get<UserResponsiveType[]>("/users-list");
             return response.data;
         } catch (error: any){
             console.log("Error: "+error);

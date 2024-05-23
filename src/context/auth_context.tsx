@@ -1,18 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext } from "react";
-import { AuthRepositoryHttp, LoginType } from "../api/repositories/auth_repository_http";
+import { AuthRepositoryHttp, LoginResponseType, UserResponsiveType } from "../api/repositories/auth_repository_http";
+
 
 
 type AuthContextType = {
-    login: (email: string, password: string) => Promise<LoginType | undefined>;
-    getAllUsers: () => Promise<[] | undefined>
+    login: (email: string, password: string) => Promise<LoginResponseType | undefined>;
+    getAllUsers: () => Promise< UserResponsiveType[] | undefined>
 };
 
 const defaultAuthContext: AuthContextType = {
     login: async (_email: string, _password: string) => {
-        return {token: ""};
+        return undefined
     },
     getAllUsers: async () => {
-        return [];
+        return undefined;
     }
 }
 
@@ -25,7 +28,7 @@ export const AuthContextProvider = ({ children }: any) => {
     async function login(email: string, password: string) {
         try {
             const response = await authRepository.doLogin(email, password);
-            console.log("STATUS" + response.status);
+            console.log('rrsponse context', response)
             return response;
         } catch (error: any) {
             console.log("ERRO" + error);
@@ -36,7 +39,7 @@ export const AuthContextProvider = ({ children }: any) => {
     async function getAllUsers() {
         try {
             const response = await authRepository.getAllUsers();
-            console.log("STATUS" + response.status);
+            console.log('response context', response)
             return response;
         } catch (error: any) {
             console.log("ERRO" + error);
