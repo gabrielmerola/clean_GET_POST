@@ -12,7 +12,7 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [data, setData] = useState<UserResponsiveType[]>();
 
-  async function getAllUsersOnPage(){
+  async function getAllUsersOnPage() {
     const response = await getAllUsers();
     console.log('response', response)
     setData(response)
@@ -21,7 +21,7 @@ export default function App() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (!token) console.log('Token não encontrado')
-    getAllUsersOnPage() 
+    getAllUsersOnPage()
   }, [])
 
   async function handleLogin(email: string, password: string) {
@@ -68,6 +68,7 @@ export default function App() {
 
                 {/* CORPO */}
                 <body className="flex flex-col">
+                  <label>{user.id}</label>
                   <label>{user.email}</label>
                 </body>
 

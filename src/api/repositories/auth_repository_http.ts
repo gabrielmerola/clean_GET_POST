@@ -9,6 +9,7 @@ export type LoginResponseType = {
 export type UserResponsiveType = {
     name: string,
     email: string,
+    id: string
 };
 
 
